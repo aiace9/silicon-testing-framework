@@ -114,7 +114,7 @@ def relax_atoms_cell(atoms, tol=1e-3, stol=None, method='lbfgs_precon', max_step
                                constant_volume=constant_volume)
     if method.startswith('lbfgs') or method == 'fire' or method == 'cg_n':
         if method == 'cg_n':
-            from quippy import Minim, fzeros
+            from quippy.potential import Minim, fzeros
             atoms.info['Minim_Hydrostatic_Strain'] = hydrostatic_strain
             atoms.info['Minim_Constant_Volume'] = constant_volume
             if mask is not None:
