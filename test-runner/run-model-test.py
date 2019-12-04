@@ -41,7 +41,7 @@ os.chdir(dir_name)
 
 json_file_name = os.path.join('..', 'model-{0}-test-{1}-properties.json'.format(args.model_name, args.test_name))
 if not args.force and os.path.isfile(json_file_name) and os.path.getsize(json_file_name) > 0:
-    print "%s already exists and is not empty, not rerunning test" % json_file_name
+    print( "%s already exists and is not empty, not rerunning test" % json_file_name)
     sys.exit(0)
 
 share_dir = os.path.join('..', '..', 'share')
