@@ -1,5 +1,5 @@
 import os
-import StringIO
+from io import StringIO
 
 from ase.io import read, write
 from ase.calculators.singlepoint import SinglePointCalculator
