@@ -24,7 +24,6 @@ except:
 
 import argparse
 
-import argparse
 parser = argparse.ArgumentParser(description='run a test with a model')
 parser.add_argument('--no_redirect_stdout','-n',dest='redirect_stdout',action='store_false', help='do not redirect output to file')
 parser.add_argument('--force','-f',action='store_true', help='run even if already seems to be complete (*-properties.json file exists')
