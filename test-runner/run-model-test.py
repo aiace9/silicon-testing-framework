@@ -7,7 +7,6 @@ import datetime
 import json
 import time
 
-import __builtin__
 
 if 'USE_MPI' in os.environ:
     import mpi4py
@@ -16,7 +15,7 @@ if 'USE_MPI' in os.environ:
     __builtin__.do_io = (mpi4py.MPI.COMM_WORLD.Get_rank() == 0)
     print( "rank ",mpi4py.MPI.COMM_WORLD.Get_rank(), "io", __builtin__.do_io)
 else:
-    __builtin__.do_io = True
+    do_io = True
 
 try:
     from ase.calculators.checkpoint import CheckpointCalculator
@@ -34,8 +33,9 @@ parser.add_argument('test_name',action='store', type=str, help='test directory')
 args = parser.parse_args()
 
 dir_name = 'model-{0}-test-{1}'.format(args.model_name, args.test_name)
-if not os.path.exists(dir_name) and __builtin__.do_io:
+if not os.path.exists(dir_name) and do_io:
     os.mkdir(dir_name)
+
 time.sleep(1)
 os.chdir(dir_name)
 
@@ -54,8 +54,8 @@ sys.path.insert(0, test_dir)
 
 if args.redirect_stdout:
     _stdout, _stderr = sys.stdout, sys.stderr
-    if __builtin__.do_io:
-        log = open('../model-{0}-test-{1}.txt'.format(args.model_name, args.test_name), 'w', 0)
+    if do_io:
+        log = open('../model-{0}-test-{1}.txt'.format(args.model_name, args.test_name), 'w')
         sys.stdout, sys.stderr = log, log
     else:
         sys.stdout = open(os.devnull, "w")
@@ -113,7 +113,7 @@ print( '='*60)
 
 if args.redirect_stdout:
     sys.stdout, sys.stderr = _stdout, _stderr
-    if __builtin__.do_io:
+    if do_io:
         log.close()
 
 if hasattr(model, 'shutdown'):
