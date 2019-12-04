@@ -35,7 +35,7 @@ class FixedLine_forces_only(ase.constraints.FixedLine):
 
 def do_lattice(bulk, use_precon=True, elastic=True, tol=1.0e-3):
 
-   print "unrelaxed bulk"
+   print( "unrelaxed bulk")
    ase.io.write(sys.stdout, bulk, format='extxyz')
 
    # use one of the routines from utilities module to relax the initial
@@ -45,10 +45,10 @@ def do_lattice(bulk, use_precon=True, elastic=True, tol=1.0e-3):
    else:
        bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, method='cg_n', symmetrize=True)
 
-   print "relaxed bulk"
+   print( "relaxed bulk")
    ase.io.write(sys.stdout, bulk, format='extxyz')
 
-   print "calculating elastic constants"
+   print( "calculating elastic constants")
    precon = None
    if use_precon:
       precon = Exp(3.0)
@@ -70,12 +70,12 @@ def do_lattice(bulk, use_precon=True, elastic=True, tol=1.0e-3):
        c44 = elastic_consts[0][3,3]/GPa
        c66 = elastic_consts[0][5,5]/GPa
 
-   print "calculating E vs. V"
+   print( "calculating E vs. V")
    V0 = bulk.get_volume()
    dV = bulk.get_volume()*0.025
    E_vs_V=[]
    scaled_bulk = bulk.copy()
-   print "bulk going into E vs. V"
+   print( "bulk going into E vs. V")
    ase.io.write(sys.stdout, scaled_bulk, format='extxyz')
    f = open("relaxed_E_vs_V_configs.xyz", "w")
 
@@ -87,43 +87,43 @@ def do_lattice(bulk, use_precon=True, elastic=True, tol=1.0e-3):
        # constraints.append(FixedLine_forces_only(i, (0.0, 0.0, 1.0)))
    # scaled_bulk.set_constraint(constraints)
    for i in range(0, -5-1, -1):
-      print "doing volume step",i
+      print( "doing volume step",i)
       vcur = scaled_bulk.get_volume()
       scaled_bulk.set_cell(scaled_bulk.get_cell()*((V0+i*dV)/vcur)**(1.0/3.0), scale_atoms=True)
       try:
           scaled_bulk = relax_atoms_cell(scaled_bulk, tol=tol, traj_file=None, constant_volume=True, method='cg_n', symmetrize=True, max_steps=500)
       except:
           break
-      print "done relaxing step",i
+      print( "done relaxing step",i)
       ase.io.write(f, scaled_bulk, format='extxyz')
       f.flush()
       E_vs_V.insert(0, (scaled_bulk.get_volume()/len(bulk), scaled_bulk.get_potential_energy()/len(bulk)) )
       evaluate(scaled_bulk)
-      print "done evaluate step",i
-      print "EV ",i, scaled_bulk.get_volume(), scaled_bulk.get_potential_energy(), scaled_bulk.get_stress()
+      print( "done evaluate step",i)
+      print( "EV ",i, scaled_bulk.get_volume(), scaled_bulk.get_potential_energy(), scaled_bulk.get_stress())
 
    scaled_bulk = bulk.copy()
    # scaled_bulk.arrays["move_mask_3"] = np.zeros((len(scaled_bulk),3), dtype=np.int)
    # scaled_bulk.arrays["move_mask_3"][:,0] = 1
    # scaled_bulk.set_constraint(constraints)
    for i in range(1,6+1):
-      print "doing volume step",i
+      print( "doing volume step",i)
       vcur = scaled_bulk.get_volume()
       scaled_bulk.set_cell(scaled_bulk.get_cell()*((V0+i*dV)/vcur)**(1.0/3.0), scale_atoms=True)
       try:
           scaled_bulk = relax_atoms_cell(scaled_bulk, tol=tol, traj_file=None, constant_volume=True, method='cg_n', symmetrize=True, max_steps=500)
       except:
           break
-      print "done relaxing step",i
+      print( "done relaxing step",i)
       ase.io.write(f, scaled_bulk, format='extxyz')
       f.flush()
       E_vs_V.append( (scaled_bulk.get_volume()/len(bulk), scaled_bulk.get_potential_energy()/len(bulk)) )
       evaluate(scaled_bulk)
-      print "done evaluate step",i
-      print "EV ",i, scaled_bulk.get_volume(), scaled_bulk.get_potential_energy(), scaled_bulk.get_stress()
+      print( "done evaluate step",i)
+      print( "EV ",i, scaled_bulk.get_volume(), scaled_bulk.get_potential_energy(), scaled_bulk.get_stress())
 
    for (V, E) in E_vs_V:
-     print "EV_final ", V, E
+     print( "EV_final ", V, E)
 
    if elastic:
        return (c11, c33, c12, c13, c44, c66, E_vs_V)

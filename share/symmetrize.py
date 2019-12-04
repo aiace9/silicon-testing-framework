@@ -5,7 +5,7 @@ import spglib
 
 def prep(at, symprec=1.0e-5):
     dataset = spglib.get_symmetry_dataset(at, symprec=symprec)
-    print "symmetry.prep got symmetry group number",dataset["number"],", international (Hermann-Mauguin)",dataset["international"],", Hall",dataset["hall"]
+    print( "symmetry.prep got symmetry group number",dataset["number"],", international (Hermann-Mauguin)",dataset["international"],", Hall",dataset["hall"])
     rotations = dataset['rotations'].copy()
     translations = dataset['translations'].copy()
     symm_map=[]

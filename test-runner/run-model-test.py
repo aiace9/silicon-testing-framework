@@ -14,7 +14,7 @@ if 'USE_MPI' in os.environ:
     from quippy.mpi_context import MPI_context
     __builtin__.mpi_glob = MPI_context()
     __builtin__.do_io = (mpi4py.MPI.COMM_WORLD.Get_rank() == 0)
-    print "rank ",mpi4py.MPI.COMM_WORLD.Get_rank(), "io", __builtin__.do_io
+    print( "rank ",mpi4py.MPI.COMM_WORLD.Get_rank(), "io", __builtin__.do_io)
 else:
     __builtin__.do_io = True
 
@@ -67,21 +67,21 @@ logger = logging.getLogger('ase.optimize.precon')
 logger.propagate = True
 logger.setLevel(logging.INFO)
 
-print 'Model {0}, Test {1}'.format(args.model_name, args.test_name)
-print 'Test run at {0}'.format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
-print
+print( 'Model {0}, Test {1}'.format(args.model_name, args.test_name))
+print( 'Test run at {0}'.format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
+print()
 
 model_file = os.path.join(model_dir, 'model.py')
-print 'model file:',model_file
-print '='*60
+print( 'model file:',model_file)
+print( '='*60)
 sys.stdout.write(open(model_file).read())
-print '='*60
+print( '='*60)
 
 test_file = os.path.join(test_dir, 'test.py')
-print 'test file:', test_file
-print '='*60
+print( 'test file:', test_file)
+print( '='*60)
 sys.stdout.write(open(test_file).read())
-print '='*60
+print( '='*60)
 
 import model # import and run the current model
 
@@ -96,20 +96,20 @@ if ('SI_GAP_TEST_CHECKPOINT' in os.environ and os.environ['SI_GAP_TEST_CHECKPOIN
 
 import test  # import and run the current test
 
-print '='*60
-print 'Property calculation output:'
-print
+print( '='*60)
+print( 'Property calculation output:')
+print()
 
 # serialise results in machine readable JSON format
 json_file = open(json_file_name, 'write')
 json.dump(test.properties, json_file)
 json_file.close()
 
-print
-print 'Summary of computed properties:'
-print test.properties
+print()
+print( 'Summary of computed properties:')
+print( test.properties)
 
-print '='*60
+print( '='*60)
 
 if args.redirect_stdout:
     sys.stdout, sys.stderr = _stdout, _stderr

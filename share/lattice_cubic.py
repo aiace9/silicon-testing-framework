@@ -27,9 +27,10 @@ def do_lattice(bulk, elastic=True):
 
    # use one of the routines from utilities module to relax the initial
    # unit cell and atomic positions
+   print('before relaxing')
    bulk = relax_atoms_cell(bulk, tol=tol, traj_file=None, symmetrize=True)
 
-   print "relaxed bulk"
+   print("relaxed bulk")
    ase.io.write(sys.stdout, bulk, format='extxyz')
 
    if elastic:
@@ -65,7 +66,7 @@ def do_lattice(bulk, elastic=True):
       E_vs_V.append( (scaled_bulk.get_volume()/len(scaled_bulk), scaled_bulk.get_potential_energy()/len(bulk)) )
 
    for (V, E) in E_vs_V:
-     print "EV_final ", V, E
+     print("EV_final ", str(V), str(E))
 
    if elastic:
        return (c11, c12, c44, E_vs_V)

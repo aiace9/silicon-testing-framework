@@ -98,7 +98,7 @@ def relax_atoms_cell(atoms, tol=1e-3, stol=None, method='lbfgs_precon', max_step
                      hydrostatic_strain=False, constant_volume=False, precon_apply_positions=True,
                      precon_apply_cell=True, symmetrize = False, **kwargs):
     import model
-    print "relax_atoms_cell using method",method
+    print( "relax_atoms_cell using method",method)
     if symmetrize:
         atoms.set_calculator(SymmetrizedCalculator(model.calculator, atoms))
     else:
